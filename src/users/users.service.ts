@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { hashPassword } from 'src/utils/Password.util';
-import { comparePassword } from 'src/utils/Password.util';
+import { sendEmail } from 'src/utils/sendEmail';
 
 @Injectable()
 export class UsersService {
@@ -27,22 +27,25 @@ export class UsersService {
             password: hashedPassowrd
         })
 
-        return this.userRepo.save(user)
+        const inserted = await this.userRepo.save(user)
 
+        if(inserted){
+            await sendEmail(email,"Account Verfication Link", inserted.id);
+        }
+        
+        return inserted
     }
 
-    async loginUser(email: string, password: string){
-        const user = await this.findByEmail(email)
-        if(!user){
-            throw new UnauthorizedException("Invalid credentials")
+    async verifyUser(userId: string): Promise<User> {
+        const user = await this.userRepo.findOne({ where: { id: userId } });
+        if (!user) {
+            throw new UnauthorizedException('User not found');
         }
-        const isPasswordMatched = await comparePassword(password, user.password)
-        if(!isPasswordMatched){
-            throw new UnauthorizedException("Invalid credentials")
-        }
-        return user
+        user.verified = true;
+        return this.userRepo.save(user);
     }
-
+    
+     
     async findByEmail(email: string): Promise<User | null> {
         return this.userRepo.findOne({ where: { email } });
     }

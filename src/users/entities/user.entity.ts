@@ -1,13 +1,13 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-export enum UserRole{
+export enum UserRole {
     USER = "USER",
     ADMIN = "ADMIN"
 }
 
 @Entity("users")
 
-export class User{
+export class User {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
@@ -26,6 +26,9 @@ export class User{
         default: UserRole.USER
     })
     role: UserRole;
+    
+    @Column({ default: false })
+    verified: boolean;
 
     @CreateDateColumn()
     createdAt: Date;

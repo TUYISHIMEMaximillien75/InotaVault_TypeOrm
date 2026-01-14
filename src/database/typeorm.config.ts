@@ -12,5 +12,6 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   password: process.env.DB_PASSWORD, // must be string
   database: process.env.DB_NAME,
   entities: [User],
-  synchronize: true,
+  synchronize: false,
+  ssl: false,
 };

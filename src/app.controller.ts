@@ -1,9 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { DataSource } from 'typeorm';
+import { AuthService } from './auth/auth.service';
 
 @Controller()
 export class AppController {
-  constructor(private dataSource: DataSource) {}
+  constructor(private dataSource: DataSource, private authService: AuthService) {}
 
   @Get()
   getHello(): string {
@@ -20,6 +21,8 @@ export class AppController {
       return { status: "error", database: "disconnected", error: err.message };
     }
   }
+
+  
 
   
 }
