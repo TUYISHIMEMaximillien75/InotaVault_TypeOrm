@@ -3,6 +3,7 @@ dotenv.config(); // MUST BE AT TOP
 
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { User } from "../users/entities/user.entity";
+import { Song } from "src/songs/entities/song.entity";
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: "postgres",
@@ -11,7 +12,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD, // must be string
   database: process.env.DB_NAME,
-  entities: [User],
-  synchronize: false,
+  entities: [User,Song],
+  synchronize: true,
   ssl: false,
 };

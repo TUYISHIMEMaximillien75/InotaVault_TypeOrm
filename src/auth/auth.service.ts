@@ -40,6 +40,9 @@ export class AuthService {
         if(!isPasswordMatched){
             throw new UnauthorizedException("Invalid credentials")
         }
+        if(!user.verified){
+            throw new UnauthorizedException("User is not verified")
+        }
         const token = await generateToken(user);
         return {
             message: "User login successfully",
