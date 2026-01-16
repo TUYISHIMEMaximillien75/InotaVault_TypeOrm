@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFiles, UseInterceptors, Query } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
@@ -16,11 +16,10 @@ export class SongsController {
   @ApiBody({
     schema: {
       type: 'object',
+      required: ['name', 'artist', 'album', 'category', 'description', 'releaseDate'],
       properties: {
 
         name: { type: 'string' },
-        uploader_id: { type: 'string' },
-        
         album: { type: 'string' },
         artist: { type: 'string' },
 
@@ -73,17 +72,33 @@ export class SongsController {
     return this.songsService.createSong(createSongDto, files);
   }
 
-  @Get()
-  findAll() {
-    return this.songsService.findAll();
+  @Get('/allsong')
+  // gettiing page number and limit for pagination 
+  async findAll(@Query('category') category: string, @Query('page') page: string, @Query('limit') limit: string) {
+    const songs = await this.songsService.findAll(category);
+    
+    const newPage = parseInt(page);
+    const newLimit = parseInt(limit);
+
+    const startIndex= (newPage - 1) * newLimit;
+    const endIndex = startIndex + newLimit;
+
+    const paginatedSong = songs.slice(startIndex, endIndex);
+
+    return paginatedSong;
   }
 
-  @Get(':id')
+  @Get('song/:id')
   findOne(@Param('id') id: string) {
-    return this.songsService.findOne(+id);
+    console.log(id);
+    return this.songsService.findOne(id);
+  }
+  @Post('like/:id')
+  likeSong(@Param('id') id: string) {
+    return this.songsService.likeSong(id);
   }
 
-  @Patch(':id')
+  @Patch('song/:id')
   update(@Param('id') id: string, @Body() updateSongDto: UpdateSongDto) {
     return this.songsService.update(+id, updateSongDto);
   }

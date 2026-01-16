@@ -26,16 +26,24 @@ export class Song {
     @Column()
     pdf_sheet: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     video_file: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     audio_file: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     external_link: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     coverImage: string;
 
     @Column()

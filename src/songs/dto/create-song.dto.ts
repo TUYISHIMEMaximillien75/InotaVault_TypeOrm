@@ -1,73 +1,46 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString } from "class-validator";
+import { IsString, IsOptional, IsDateString } from "class-validator";
 
 export class CreateSongDto {
- @IsString()
- @ApiProperty({
-    example: "name",
- })
- name: string
 
- @IsString()
- @ApiProperty({
-    example: "description",
- })
- description: string
+   @ApiProperty({ example: "Song Name" })
+   @IsString()
+   name: string;
 
- @IsString()
- @ApiProperty({
-    example: "category",
- })
- category: string
+   @ApiProperty({ example: "Song description" })
+   @IsString()
+   description: string;
 
- @IsString()
- @ApiProperty({
-    example: "artist",
- })
- artist: string
+   @ApiProperty({ example: "Gospel" })
+   @IsString()
+   category: string;
 
- @IsString()
- @ApiProperty({
-    example: "album",
- })
- album: string
+   @ApiProperty({ example: "Artist Name" })
+   @IsString()
+   artist: string;
 
- @IsString()
- @ApiProperty({
-    example: "pdf_sheet",
- })
- pdf_sheet: string
+   @ApiProperty({ example: "Album Name" })
+   @IsString()
+   album: string;
 
- @IsString()
- @ApiProperty({
-    example: "video_file",
- })
- video_file: string
+   @ApiProperty({ example: "https://youtube.com/..." })
+   @IsOptional()
+   @IsString()
+   external_link?: string;
 
- @IsString()
- @ApiProperty({
-    example: "audio_file",
- })
- audio_file: string
+   @ApiProperty({ example: "2025-01-15" })
+   @IsDateString()
+   releaseDate: string;
 
- @IsString()
- @ApiProperty({
-    example: "external_link",
- })
- external_link: string
+   @IsOptional()
+   pdf_sheet?: any;
 
- @IsString()
- @ApiProperty({
-    example: "coverImage",
- })
- coverImage: string
+   @IsOptional()
+   audio_file?: any;
 
- @IsString()
- @ApiProperty({
-    example: "releaseDate",
- })
- releaseDate: Date
- 
+   @IsOptional()
+   video_file?: any;
 
-
+   @IsOptional()
+   coverImage?: any;
 }

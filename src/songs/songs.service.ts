@@ -31,9 +31,11 @@ export class SongsService {
 
     const coverImage = files.coverImage ? await this.cloudinaryService.uploadFile(files.coverImage[0], "songs/covers") : null;
 
+    const uploader_id = "e7730b2f-8d68-4155-804e-1c0292eca4a5";
 
     const song = this.songRepository.create({
       ...createSongDto,
+      uploader_id,
       pdf_sheet: pdf?.url,
       audio_file: audio?.url,
       video_file: video?.url,
@@ -42,12 +44,54 @@ export class SongsService {
     return await this.songRepository.save(song);
   }
 
-  findAll() {
-    return `This action returns all songs`;
+  findAll(category: string) {
+
+    if(category === "all"){
+      return this.songRepository.find();
+    }
+
+    const songs = this.songRepository.find({
+      where:{
+        category: category
+      },
+       //order randomly
+       order: {
+        id: "ASC"
+       }
+    });
+    return songs;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} song`;
+  async findOne(id: string) {
+    const song = await this.songRepository.findOne({
+      where:{
+        id: id
+      }
+    });
+
+    if(!song){
+      throw new Error("Song not found");
+    }
+
+    const view_count = song.view_count + 1;
+    await this.songRepository.update(id, { view_count });
+    return song;
+  }
+
+  async likeSong(id: string) {
+    const song = await this.songRepository.findOne({
+      where:{
+        id: id
+      }
+    });
+
+    if(!song){
+      throw new Error("Song not found");
+    }
+
+    const likes = song.likes + 1;
+    await this.songRepository.update(id, { likes });
+    return song.likes + 1;
   }
 
   update(id: number, updateSongDto: UpdateSongDto) {

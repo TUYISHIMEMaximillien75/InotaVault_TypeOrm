@@ -7,9 +7,10 @@ import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
 import { SongsModule } from './songs/songs.module'; 
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeOrmConfig), UsersModule, AuthModule, SongsModule, CloudinaryModule],
+  imports: [TypeOrmModule.forRoot(typeOrmConfig), UsersModule, AuthModule, SongsModule, CloudinaryModule, CommentsModule],
   // controllers: [AppController, AuthController],
 })
 export class AppModule implements OnApplicationBootstrap {
