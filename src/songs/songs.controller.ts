@@ -5,12 +5,20 @@ import { UpdateSongDto } from './dto/update-song.dto';
 
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiSecurity } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
+import { Public } from 'src/auth/decorators/public.decorator';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+
+import { User } from 'src/users/entities/user.entity';
 
 @Controller('songs')
 export class SongsController {
   constructor(private readonly songsService: SongsService) { }
 
+  @ApiSecurity('JWT-auth')
+  @UseGuards(JwtAuthGuard)
   @Post('upload')
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -62,16 +70,17 @@ export class SongsController {
     ),
   )
 
-  uploadSong(@Body() createSongDto: CreateSongDto, @UploadedFiles() files: {
+  uploadSong(@CurrentUser() user: User, @Body() createSongDto: CreateSongDto, @UploadedFiles() files: {
     pdf_sheet: Express.Multer.File[];
     audio_file?: Express.Multer.File[];
     video_file?: Express.Multer.File[];
     coverImage?: Express.Multer.File[];
-  }) {
+  } ) {
 
-    return this.songsService.createSong(createSongDto, files);
+    return this.songsService.createSong(user, createSongDto, files);
   }
 
+  @Public()
   @Get('/allsong')
   // gettiing page number and limit for pagination 
   async findAll(@Query('category') category: string, @Query('page') page: string, @Query('limit') limit: string) {

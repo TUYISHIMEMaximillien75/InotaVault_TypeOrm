@@ -17,11 +17,20 @@ async function bootstrap() {
   .setTitle(SwaggerConfig.title)
   .setDescription(SwaggerConfig.description)
   .setVersion(SwaggerConfig.version)
+  .addSecurity('JWT-auth', {
+    type: 'http',
+    scheme: 'bearer',
+    bearerFormat: 'JWT',
+  })
   .build()
 
   const documentFactory = () => SwaggerModule.createDocument(app, config)
 
-  SwaggerModule.setup('docs', app, documentFactory)
+  SwaggerModule.setup('docs', app, documentFactory,{
+    swaggerOptions: {
+      persistAuthorization: true,
+    }
+  })
 
   await app.listen(process.env.PORT ?? 3000);
   console.log(`Application is running on: ${await app.getUrl()}`);

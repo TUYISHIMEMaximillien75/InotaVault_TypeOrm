@@ -12,6 +12,7 @@ const jwtService = new JwtService({
 export const generateToken = (user: User) => {
     const payload = {
         sub: user.id,
+        name: user.name,
         role: user.role,
     };
     return jwtService.sign(payload);

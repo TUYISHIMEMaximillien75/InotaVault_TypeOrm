@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Song } from './entities/song.entity';
 import { Repository } from 'typeorm';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-// import { User } from 'src/users/entities/user.entity';
+import { User } from 'src/users/entities/user.entity';
 @Injectable()
 export class SongsService {
   constructor(
@@ -14,7 +14,7 @@ export class SongsService {
     private readonly cloudinaryService: CloudinaryService
   ) { }
 
-  async createSong(createSongDto: CreateSongDto,
+  async createSong(user: User, createSongDto: CreateSongDto,
     files: {
       pdf_sheet: Express.Multer.File[];
       video_file?: Express.Multer.File[];
@@ -31,7 +31,7 @@ export class SongsService {
 
     const coverImage = files.coverImage ? await this.cloudinaryService.uploadFile(files.coverImage[0], "songs/covers") : null;
 
-    const uploader_id = "e7730b2f-8d68-4155-804e-1c0292eca4a5";
+    const uploader_id = user.id;
 
     const song = this.songRepository.create({
       ...createSongDto,

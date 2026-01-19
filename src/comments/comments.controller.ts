@@ -1,15 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-
+import { ApiSecurity } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import { User } from 'src/users/entities/user.entity';
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
+  @ApiSecurity('JWT-auth')
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createCommentDto: CreateCommentDto) {
-    return this.commentsService.create(createCommentDto);
+  create(@CurrentUser() user: User,   @Body() createCommentDto: CreateCommentDto) {
+    return this.commentsService.create(user, createCommentDto);
   }
 
   @Get()

@@ -12,6 +12,9 @@ export class Comment {
     user_id: string;
 
     @Column()
+    name: string;
+
+    @Column()
     comment: string;
 
     @CreateDateColumn()
