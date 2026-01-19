@@ -43,8 +43,12 @@ export class LikesService {
     // return 'This action adds a new like';
   }
 
-  findAll() {
-    return `This action returns all likes`;
+  findAll(song_id: string) {
+    return this.likesRepository.count({
+      where:{
+        song_id: song_id,
+      }
+    })
   }
 
   findOne(id: number) {

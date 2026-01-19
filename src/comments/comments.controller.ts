@@ -26,6 +26,12 @@ export class CommentsController {
     return this.commentsService.findAll(song_id);
   }
 
+  @Public()
+  @Get('/allCommentsNumber')
+  findAllNumber(@Query('song_id') song_id: string) {
+    return this.commentsService.findAll(song_id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.commentsService.findOne(+id);

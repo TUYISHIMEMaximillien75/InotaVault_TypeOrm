@@ -93,8 +93,11 @@ export class SongsController {
     const endIndex = startIndex + newLimit;
 
     const paginatedSong = songs.slice(startIndex, endIndex);
+    const total = songs.length;
 
-    return paginatedSong;
+    
+
+    return {paginatedSong, total};
   }
 
   @Get('song/:id')

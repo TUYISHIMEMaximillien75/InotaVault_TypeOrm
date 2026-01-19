@@ -7,6 +7,7 @@ import { User } from 'src/users/entities/user.entity';
 import { ApiSecurity } from '@nestjs/swagger';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('likes')
 export class LikesController {
@@ -18,10 +19,11 @@ export class LikesController {
 
     return this.likesService.create(user, song_id);
   }
-
+  @Public()
   @Get()
-  findAll() {
-    return this.likesService.findAll();
+  findAll(@Query('song_id') song_id: string) {
+    
+    return this.likesService.findAll(song_id);
   }
 
   @Get(':id')

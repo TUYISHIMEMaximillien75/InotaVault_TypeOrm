@@ -37,6 +37,18 @@ export class CommentsService {
     });
   }
 
+  async findAllNumber(song_id: string) {
+    const count = await this.commentRepository.count({
+      where:{
+        song_id: song_id
+      }
+    });
+
+    console.log("count");
+    return count;
+
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} comment`;
   }
