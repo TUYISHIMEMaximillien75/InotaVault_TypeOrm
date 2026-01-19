@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -6,6 +6,9 @@ import { ApiSecurity } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { User } from 'src/users/entities/user.entity';
+import { Public } from 'src/auth/decorators/public.decorator';
+
+
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
@@ -13,13 +16,14 @@ export class CommentsController {
   @ApiSecurity('JWT-auth')
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@CurrentUser() user: User,   @Body() createCommentDto: CreateCommentDto) {
+  create(@CurrentUser() user: User, @Body() createCommentDto: CreateCommentDto) {
     return this.commentsService.create(user, createCommentDto);
   }
 
-  @Get()
-  findAll() {
-    return this.commentsService.findAll();
+  @Public()
+  @Get('/allComments')
+  findAll(@Query('song_id') song_id: string) {
+    return this.commentsService.findAll(song_id);
   }
 
   @Get(':id')

@@ -26,8 +26,15 @@ export class CommentsService {
     
   }
 
-  findAll() {
-    return `This action returns all comments`;
+  async findAll(song_id: string) {
+    return await this.commentRepository.find({
+      where:{
+        song_id: song_id
+      },
+      order: {
+        id: "ASC"
+      }
+    });
   }
 
   findOne(id: number) {

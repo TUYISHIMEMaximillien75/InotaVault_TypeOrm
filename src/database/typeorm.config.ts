@@ -6,7 +6,7 @@ import { DataSource, DataSourceOptions } from "typeorm";
 import { User } from "../users/entities/user.entity";
 import { Song } from "../songs/entities/song.entity";
 import { Comment } from "../comments/entities/comment.entity";
-
+import { Like } from "src/likes/entities/like.entity";
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: "postgres",
   host: process.env.DB_HOST,
@@ -14,7 +14,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD, // must be string
   database: process.env.DB_NAME,
-  entities: [User, Song, Comment],
+  entities: [User, Song, Comment, Like],
   synchronize: true,
   // ssl: false,
 };
