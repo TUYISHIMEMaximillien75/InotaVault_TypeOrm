@@ -1,7 +1,7 @@
 DB_HOST=localhost
 DB_PORT=5432
 DB_USERNAME=postgres
-DB_PASSWORD= 
+DB_PASSWORD= your-password
 DB_NAME=InotaVault_nest
 
 JWT_SECRET=InotaVault:
@@ -11,7 +11,13 @@ PORT = 3000
 
 BACKEND_HOST = http://localhost
 
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=your-email@gmail.com
-EMAIL_PASS=your-app-password
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587 
+SMTP_USER=sender@gmail.com
+SMTP_PASS= your-app-password
+SENDER_EMAIL="InotaVault" <sender>
+
+
+CLOUDINARY_CLOUD_NAME=CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY=CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET=CLOUDINARY_API_SECRET

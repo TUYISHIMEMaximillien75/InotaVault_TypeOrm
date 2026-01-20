@@ -100,9 +100,9 @@ export class SongsController {
     return {paginatedSong, total};
   }
 
+  @Public()
   @Get('song/:id')
   findOne(@Param('id') id: string) {
-    console.log(id);
     return this.songsService.findOne(id);
   }
   @Post('like/:id')

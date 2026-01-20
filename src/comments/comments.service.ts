@@ -14,7 +14,6 @@ export class CommentsService {
   ){}
   async create(user: User, createCommentDto: CreateCommentDto) {
     const userId = user.id;
-    console.log(user);
     const comment = this.commentRepository.create({
       ...createCommentDto,
       user_id: userId,
@@ -44,7 +43,6 @@ export class CommentsService {
       }
     });
 
-    console.log("count");
     return count;
 
   }
