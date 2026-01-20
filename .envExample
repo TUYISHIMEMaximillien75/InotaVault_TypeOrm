@@ -9,7 +9,7 @@ JWT_EXPIRES_IN='1d'
 
 PORT = 3000
 
-BACKEND_HOST = http://localhost
+BACKEND_HOST = https://inotavaulttypeorm-production.up.railway.app/docs
 
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587 
