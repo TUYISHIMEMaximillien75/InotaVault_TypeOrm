@@ -11,21 +11,21 @@ export class LikesService {
   constructor(
     @InjectRepository(Like)
     private readonly likesRepository: Repository<Like>
-  ){}
+  ) { }
   async create(user: User, song_id: string) {
     const user_id = user.id
     const name = user.name
     const likesExist = await this.likesRepository.findOne({
-      where:{
+      where: {
         song_id: song_id,
         user_id: user_id
       }
     });
-    if(likesExist){
+    if (likesExist) {
       return 'liked';
     }
-  
-    const like =  this.likesRepository.create({
+
+    const like = this.likesRepository.create({
       song_id,
       user_id,
       name
@@ -34,7 +34,7 @@ export class LikesService {
     this.likesRepository.save(like)
 
     const Totallikes = await this.likesRepository.count({
-      where:{
+      where: {
         song_id: song_id,
       }
     })
@@ -45,7 +45,7 @@ export class LikesService {
 
   findAll(song_id: string) {
     return this.likesRepository.count({
-      where:{
+      where: {
         song_id: song_id,
       }
     })
